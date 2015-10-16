@@ -29,6 +29,7 @@ public class PlayerStateListener : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
+        PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.jump] = 1.0f;
     }
 
     void LateUpdate()
@@ -147,8 +148,10 @@ public class PlayerStateListener : MonoBehaviour
                 break;
             case PlayerStateController.playerStates.landing:
                 playerHasLanded = true;
+                PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.jump] = Time.time + 0.1f;
                 break;
             case PlayerStateController.playerStates.falling:
+                PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.jump] = 0f;
                 break;
             case PlayerStateController.playerStates.kill:
                 break;
@@ -196,6 +199,7 @@ public class PlayerStateListener : MonoBehaviour
                 // or kill.
                 if (newState == PlayerStateController.playerStates.landing
                     || newState == PlayerStateController.playerStates.kill
+                    || newState == PlayerStateController.playerStates.falling
                     || newState == PlayerStateController.playerStates.firingWeapon)
                     return true;
                 else
@@ -210,6 +214,15 @@ public class PlayerStateListener : MonoBehaviour
                     returnVal = false;
                 break;
             case PlayerStateController.playerStates.falling:
+                // The only states that can take over from falling are landing or kill
+                if (
+                    newState == PlayerStateController.playerStates.landing
+                    || newState == PlayerStateController.playerStates.kill
+                    || newState == PlayerStateController.playerStates.firingWeapon
+                  )
+                    returnVal = true;
+                else
+                    returnVal = false;
                 break;
             case PlayerStateController.playerStates.kill:
                 // The only state that can take over from kill is resurrect
@@ -248,6 +261,11 @@ public class PlayerStateListener : MonoBehaviour
                 break;
 
             case PlayerStateController.playerStates.jump:
+                float nextAllowedJumpTime = PlayerStateController.stateDelayTimer[(int)PlayerStateController.playerStates.jump];
+
+                if (nextAllowedJumpTime == 0.0f || nextAllowedJumpTime > Time.time)
+                    returnVal = true;
+
                 break;
 
             case PlayerStateController.playerStates.landing:
