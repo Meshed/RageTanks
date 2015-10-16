@@ -30,6 +30,7 @@ public class PlayerStateListener : MonoBehaviour
     {
         playerAnimator = GetComponent<Animator>();
         PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.jump] = 1.0f;
+        PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.firingWeapon] = 1.0f;
     }
 
     void LateUpdate()
@@ -87,6 +88,8 @@ public class PlayerStateListener : MonoBehaviour
                 break;
             case PlayerStateController.playerStates.resurrect:
                 onStateChange(PlayerStateController.playerStates.idle);
+                break;
+            case PlayerStateController.playerStates.firingWeapon:
                 break;
         }
     }
@@ -160,6 +163,29 @@ public class PlayerStateListener : MonoBehaviour
                 transform.rotation = Quaternion.identity;
                 GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 break;
+            case PlayerStateController.playerStates.firingWeapon:
+                // Make the bullet object
+                GameObject newBullet = (GameObject) Instantiate(bulletPrefab);
+
+                // Set up the bullet's starting postion
+                newBullet.transform.position = bulletSpawnTransform.position;
+
+                // Acquire the PlayerBulletController component on the new object
+                // so we can specify some data
+                PlayerBulletController bullCon = newBullet.GetComponent<PlayerBulletController>();
+
+                // Set the player object
+                bullCon.playerObject = gameObject;
+
+                // Launch the bullet!
+                bullCon.lauchBullet();
+
+                // With the bullet made, set the state of the player back to the
+                // current state
+                onStateChange(currentState);
+
+                PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.firingWeapon] = Time.time + 0.25f;
+                break;
         }
 
         // Store the current state as the previous state
@@ -208,7 +234,8 @@ public class PlayerStateListener : MonoBehaviour
             case PlayerStateController.playerStates.landing:
                 if (newState == PlayerStateController.playerStates.left
                     || newState == PlayerStateController.playerStates.right
-                    || newState == PlayerStateController.playerStates.idle)
+                    || newState == PlayerStateController.playerStates.idle
+                    || newState == PlayerStateController.playerStates.firingWeapon)
                     returnVal = true;
                 else
                     returnVal = false;
@@ -231,13 +258,15 @@ public class PlayerStateListener : MonoBehaviour
                 else
                     returnVal = false;
                 break;
-
             case PlayerStateController.playerStates.resurrect:
                 // The only state that can take over from Resurrect is Idle
                 if (newState == PlayerStateController.playerStates.idle)
                     returnVal = true;
                 else
                     returnVal = false;
+                break;
+            case PlayerStateController.playerStates.firingWeapon:
+                returnVal = true;
                 break;
         }
         return returnVal;
@@ -278,6 +307,10 @@ public class PlayerStateListener : MonoBehaviour
                 break;
 
             case PlayerStateController.playerStates.resurrect:
+                break;
+            case PlayerStateController.playerStates.firingWeapon:
+                if (PlayerStateController.stateDelayTimer[(int) PlayerStateController.playerStates.firingWeapon] > Time.time)
+                    returnVal = true;
                 break;
         }
 

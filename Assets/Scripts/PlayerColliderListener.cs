@@ -14,6 +14,10 @@ public class PlayerColliderListener : MonoBehaviour
                 // When the player lands on a platform, toggle the Landing state.
                 targetStateListener.onStateChange(PlayerStateController.playerStates.landing);
                 break;
+            case "DeathTrigger":
+                // Player hit the death trigger - kill 'em!
+                targetStateListener.onStateChange(PlayerStateController.playerStates.kill);
+                break;
         }
     }
 

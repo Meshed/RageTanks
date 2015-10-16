@@ -69,6 +69,12 @@ public class CameraController : MonoBehaviour
             case PlayerStateController.playerStates.right:
                 trackPlayer();
                 break;
+            case PlayerStateController.playerStates.jump:
+                trackPlayer();
+                break;
+            case PlayerStateController.playerStates.firingWeapon:
+                trackPlayer();
+                break;
         }
     }
 
