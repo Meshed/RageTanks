@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\PlayerColliderListener.cs" />
      <Compile Include="Assets\Scripts\PlayerStateController.cs" />
      <Compile Include="Assets\Scripts\PlayerStateListener.cs" />
+     <Compile Include="Assets\Scripts\SelfDestruct.cs" />
      <Compile Include="Assets\Scripts\TakeDamageFromPlayerBullet.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
