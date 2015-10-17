@@ -5,7 +5,21 @@ using UnityEngine.SocialPlatforms;
 public class EnemyControllerScript : MonoBehaviour
 {
     public float walkingSpeed = 0.45f;
+    public TakeDamageFromPlayerBullet bulletColliderListener = null;
+
     private bool walkingLeft = true;
+
+    void OnEnable()
+    {
+        // Subscribe to events from the bullet collider
+        bulletColliderListener.hitByBullet += hitByPlayerBullet;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe from events
+        bulletColliderListener.hitByBullet -= hitByPlayerBullet;
+    }
 
     void Start()
     {
@@ -59,5 +73,12 @@ public class EnemyControllerScript : MonoBehaviour
                 transform.localScale = localScale;
             }
         }
+    }
+
+    public void hitByPlayerBullet()
+    {
+        // Wait a moment to ensure we are clear, then destroy the
+        // enemy object.
+        Destroy(gameObject, 0.1f);
     }
 }
