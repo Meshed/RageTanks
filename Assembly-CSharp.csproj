@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\DestroyOnCollision.cs" />
      <Compile Include="Assets\Scripts\EnemyControllerScript.cs" />
      <Compile Include="Assets\Scripts\EnemyGuideWatcher.cs" />
+     <Compile Include="Assets\Scripts\ParallaxController.cs" />
      <Compile Include="Assets\Scripts\PlayerBulletController.cs" />
      <Compile Include="Assets\Scripts\PlayerColliderListener.cs" />
      <Compile Include="Assets\Scripts\PlayerStateController.cs" />
