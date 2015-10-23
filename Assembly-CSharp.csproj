@@ -45,16 +45,21 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BossCrushTrigger.cs" />
+     <Compile Include="Assets\Scripts\BossEventController.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\DeathTriggerScript.cs" />
      <Compile Include="Assets\Scripts\DestroyOnCollision.cs" />
      <Compile Include="Assets\Scripts\EnemyControllerScript.cs" />
      <Compile Include="Assets\Scripts\EnemyGuideWatcher.cs" />
+     <Compile Include="Assets\Scripts\EnemyRespawner.cs" />
      <Compile Include="Assets\Scripts\ParallaxController.cs" />
      <Compile Include="Assets\Scripts\PlayerBulletController.cs" />
      <Compile Include="Assets\Scripts\PlayerColliderListener.cs" />
      <Compile Include="Assets\Scripts\PlayerStateController.cs" />
      <Compile Include="Assets\Scripts\PlayerStateListener.cs" />
+     <Compile Include="Assets\Scripts\RoundWatcher.cs" />
+     <Compile Include="Assets\Scripts\ScoreWatcher.cs" />
      <Compile Include="Assets\Scripts\SelfDestruct.cs" />
      <Compile Include="Assets\Scripts\TakeDamageFromPlayerBullet.cs" />
  <Reference Include="UnityEngine.UI">

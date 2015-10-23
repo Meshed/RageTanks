@@ -7,6 +7,10 @@ public class EnemyControllerScript : MonoBehaviour
     public float walkingSpeed = 0.45f;
     public TakeDamageFromPlayerBullet bulletColliderListener = null;
 
+    // States to allow objects to know when an enemy dies
+    public delegate void enemyEventHandler(int scoreMod);
+    public static event enemyEventHandler enemyDied;
+
     private bool walkingLeft = true;
 
     void OnEnable()
@@ -26,6 +30,17 @@ public class EnemyControllerScript : MonoBehaviour
         // Randomly default the enemy's direction
         walkingLeft = (Random.Range(0, 2) == 1);
         updateVisualWalkOrientation();
+
+        // Find the round watcher object
+        GameObject roundWatcherObject = GameObject.FindGameObjectWithTag("RoundWatcher");
+
+        if (roundWatcherObject != null)
+        {
+            RoundWatcher roundWatcherComponent = roundWatcherObject.GetComponent<RoundWatcher>();
+
+            // Increase the enemy speed for each round
+            walkingSpeed = walkingSpeed*roundWatcherComponent.currRound;
+        }
     }
 
     void Update()
@@ -77,6 +92,10 @@ public class EnemyControllerScript : MonoBehaviour
 
     public void hitByPlayerBullet()
     {
+        // Call the EnemyDied event and give it a score of 25.
+        if (enemyDied != null)
+            enemyDied(25);
+
         // Wait a moment to ensure we are clear, then destroy the
         // enemy object.
         Destroy(gameObject, 0.1f);
